@@ -116,7 +116,7 @@ ggplot(aes(x = stock_index, y = return)) +
     label.r = unit(.25, "lines"), color = "grey60") +
   labs(x = "", y = "Quarterly Stock Returns",
        title = "STOCK COLLAPSE OF BIG TECHS",
-       caption = str_wrap("Data comes from Yahoo Finance via Kaggle, collected and shared by Evan Gower. This graph illustrates the relative stock performance of selected big techs compared to their average. | Visualization by Zhaowen Guo", width = 300)) +
+       caption = str_wrap("Data comes from Yahoo Finance via Kaggle, collected and shared by Evan Gower. This graph illustrates the relative stock performance of selected big techs compared to their average | Visualization by Zhaowen Guo", width = 300)) +
   guides(colour = guide_legend(nrow = 1, override.aes = list(size = 5)))  
 
 width <- 13
