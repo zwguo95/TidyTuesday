@@ -43,7 +43,6 @@ data <- big_tech_stock_prices %>%
                   rep("Q1 2022", 6), rep("Q2 2022", 6), rep("Q3 2022", 6), rep("Q4 2022", 6)))
 ```
 
-
 # Theme for graphing
 
 ```{r}
@@ -90,6 +89,7 @@ theme_update(
     hjust = 0.5,
     margin = margin(t = 40)))
 ```
+
 ## Graphing
 
 ```{r}
@@ -119,6 +119,8 @@ ggplot(aes(x = stock_index, y = return)) +
        caption = str_wrap("Data comes from Yahoo Finance via Kaggle, collected and shared by Evan Gower. This graph illustrates the relative stock performance of selected big techs compared to their average | Visualization by Zhaowen Guo", width = 300)) +
   guides(colour = guide_legend(nrow = 1, override.aes = list(size = 5)))  
 
-width <- 13
+# view the graph before saving
+library(ggview)
+ggview(width = 13, height = 13/1.168, units = "in")
 ggsave("stock.png", width = width, height = width/1.618)
 ```
