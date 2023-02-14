@@ -3,8 +3,8 @@ This repository is dedicated to my contributions to the TidyTuesday project. Eac
 
 ## Gallery of my works
 
-### **[Hollywood Age Gaps](2023/)**
+### **[Hollywood Age Gaps](2023/0214)**
 ![Screenshot](2023/0214/hollywood-age-gap.png)
 
-### **[Big Tech Stock Prices](2023/)**
+### **[Big Tech Stock Prices](2023/0207)**
 ![Screenshot](2023/0207/stock.png)
