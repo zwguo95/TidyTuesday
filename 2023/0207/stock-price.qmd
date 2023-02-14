@@ -122,5 +122,5 @@ ggplot(aes(x = stock_index, y = return)) +
 # view the graph before saving
 library(ggview)
 ggview(width = 13, height = 13/1.168, units = "in")
-ggsave("stock.png", width = width, height = width/1.618)
+ggsave("stock.png", width = 13, height = 13/1.618)
 ```

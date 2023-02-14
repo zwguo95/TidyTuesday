@@ -1,0 +1,80 @@
+---
+title: "Hollywood Age Gap"
+format: html
+editor: visual
+---
+
+# Data cleaning
+
+```{r,message=FALSE}
+library(MetBrewer)
+library(cowplot)
+library(showtext)
+library(ggforce)
+library(tidyverse)
+
+font_add_google('Lora', 'lora')
+showtext_auto()
+colors <- met.brewer("Cassatt2", 10)
+
+age_gaps <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-02-14/age_gaps.csv')
+age_gaps_2010s <- age_gaps %>%
+  filter(release_year >= 2010 & release_year < 2020) %>%
+  mutate(large_gap = ifelse(age_difference >= 15, 1, 0)) %>%
+  group_by(release_year) %>%
+  summarise(prop = round(sum(large_gap)/n(), digits = 2)*100) %>%
+  ungroup() %>%
+  mutate(year_order = release_year + seq(0, by=-1.5, length.out = 10))
+```
+
+```{r}
+age_gaps_2010s_movies <- age_gaps %>%
+  filter(release_year >= 2010 & release_year < 2020) %>%
+  group_by(release_year) %>%
+  mutate(max = max(age_difference)) %>%
+  filter(max == age_difference) %>%
+  select(release_year, max, movie_name, director) %>%
+  left_join(age_gaps_2010s)
+```
+
+```{r}
+year_size <- 14
+p1 <- ggplot(data=age_gaps_2010s_movies) +
+  geom_link(aes(x=year_order, xend=year_order, y=0, yend=prop, color=release_year), size=9, alpha=0.5) +
+  geom_point(aes(y=prop, x=year_order, color=release_year), size=7) +
+  scale_color_gradientn(colors = rev(colors)) +
+  coord_polar(theta = "y", clip="off", start = 4.71) +
+  scale_x_continuous(limits = c(2004, NA)) +
+  scale_y_continuous(limits = c(NA, 42)) +
+  theme_void(base_family = "lora") +
+  labs(title = "HOLLYWOOD AGE GAP IN MOVIE COUPLES",
+       subtitle = "Proportion of movie couples with an age gap of over 15 years in the 2010s",
+       caption = str_wrap("Data comes from Hollywood Age Gap which shows the age gap between movie love interests. A large age gap is defined as a difference in age exceeding 15 years | Visualization by Zhaowen Guo", width = 300)) +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 75, margin = margin(t = 25, b = 10, l = 0, r = 0), hjust = 0.5),
+        plot.margin = margin(15, 30, 15, 30),
+        plot.subtitle = element_text(size = 60, hjust = 0.5),
+        plot.caption.position = "plot",
+        plot.caption = element_text(size = 35, color = "grey20", hjust = 0.5, margin = margin(b=10)),
+        legend.position = "none",
+        plot.background = element_rect(fill="#fdf7ee", color="#fdf7ee")) +
+  annotate(geom="text", label="2010", x=2010, y=0, vjust=1.5, color= "#0e2810", size=year_size) +
+  annotate(geom="text", label="2011", x=2009.5, y=0, vjust=1.5, color= "#2c4b27", size=year_size)+
+  annotate(geom="text", label="2012", x=2009, y=0, vjust=1.5, color= "#466c4b", size=year_size) +
+  annotate(geom="text", label="2013", x=2008.5, y=0, vjust=1.5, color= "#7fa074", size=year_size) +
+  annotate(geom="text", label="2014", x=2008.0, y=0, vjust=1.5, color= "#c1d1aa", size=year_size) +
+  annotate(geom="text", label="2015", x=2007.5, y=0, vjust=1.5, color= "#dec5da", size=year_size)+
+  annotate(geom="text", label="2016", x=2007.0, y=0, vjust=1.5, color= "#b695bc", size=year_size) +
+  annotate(geom="text", label="2017", x=2006.5, y=0, vjust=1.5, color= "#90719f", size=year_size) +
+  annotate(geom="text", label="2018", x=2006, y=0, vjust=1.5, color= "#574571", size=year_size) +
+  annotate(geom="text", label="2019", x=2005.5, y=0, vjust=1.5, color= "#2d223c", size=year_size)
+```
+
+```{r}
+ggdraw(p1) +
+  draw_label(label = "The movie Beginners (2010) features\n the largest age gap of 43 years", x=0.88, y=0.69, color="grey50", fontface="bold", size=35, lineheight = 0.5, fontfamily = "lora") +
+  draw_label(label = "In 2012, 38% of movie couples\n have large age gaps", size = 35, color = "grey50", fontface = "bold", x = 0.17, y = 0.31, lineheight = 0.5) +
+  draw_label(label = "In 2018, 7% of movie couples\n have large age gaps", size = 35, color = "grey50", fontface = "bold", x = 0.34, y = 0.4, lineheight = 0.5) +
+   draw_line(x=c(0.36, 0.38), y=c(0.43, 0.46), size=2, color="#574571")
+ggsave("hollywood-age-gap.png", height = 16, width = 16)
+```
