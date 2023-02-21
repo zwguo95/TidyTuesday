@@ -1,0 +1,67 @@
+---
+title: "Bob Ross's Paintings"
+format: html
+editor: visual
+---
+
+# Data cleaning
+
+```{r,message=FALSE}
+library(MetBrewer)
+library(cowplot)
+library(showtext)
+library(tidyverse)
+
+font_add_google("EB Garamond")
+showtext_auto()
+
+bob_ross <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-02-21/bob_ross.csv')
+```
+
+```{r}
+bob_ross_colors <- bob_ross %>%
+  filter(season > 19) %>% 
+  pivot_longer(cols = Black_Gesso:Alizarin_Crimson, 
+               names_to = "color_boolean", 
+               values_to = "color_used") %>%
+  group_by(season, color_boolean) %>%
+  summarise(color_frequency = sum(color_used)) %>%
+  filter(color_frequency >= 11) %>%
+  arrange(desc(color_frequency), .by_group = T) %>%
+  mutate(season_label = paste0("Season ", season))
+```
+```{r}
+# construct color mapping 
+levels(factor(bob_ross_colors$color_boolean))
+color_map <- data.frame(colors = levels(factor(bob_ross_colors$color_boolean)),
+                        color_index = c("#E32636","#EE4B2B", "#FDDA0D", "#3C1414",
+                                        "#e3a857", "#1b1e23","#000f89", "#003153",
+                                        "#507d2a", "#FFFFFF", "#664228", "#CC7722"))
+```
+
+```{r}
+#install.packages("waffle", repos = "https://cinc.rud.is")
+library(waffle)
+ggplot(bob_ross_colors, aes(fill = color_boolean, values = color_frequency)) +
+  geom_waffle(n_rows = 13, size = 0.3, colour = "grey90", flip = TRUE,
+              height = 0.9, width = 0.9) +
+  scale_fill_manual(values = color_map$color_index, breaks = color_map$color) +
+  facet_wrap(vars(season_label), strip.position = "bottom") + 
+  theme_void(base_family = "EB Garamond") + 
+  theme(panel.background = element_blank(),
+        plot.background = element_rect(fill="#fdf7ee", color="#fdf7ee"),
+        strip.text =  element_text(color = "grey50", size = 45),
+        plot.title.position = "plot",
+        plot.title = element_text(size = 70, margin = margin(t = 10, b = 5, l = 0, r = 0), hjust = 0.5),
+        plot.margin = margin(15, 30, 15, 30),
+        plot.subtitle = element_text(size = 55, hjust = 0.5, margin = margin(b=25)),
+        plot.caption.position = "plot",
+        plot.caption = element_text(size = 35, color = "grey40", hjust = 0.5, margin = margin(t=40))) +
+  labs(title = "Bob Ross's Most Commonly Used Colors in the 1990s",
+       subtitle = "Colors used more than 10 times in each season of The Joy of Painting",
+       caption = str_wrap("Data from the paintings of Bob Ross featured in the TV show, The Joy of Painting | Visualization by Zhaowen Guo", width = 300))
+ggsave("ross-paintings.png", width = 16, height = 16/1.618)
+```
+
+
+
