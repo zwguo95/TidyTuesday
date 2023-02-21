@@ -3,6 +3,9 @@ This repository is dedicated to my contributions to the TidyTuesday project. Eac
 
 ## Gallery of my works
 
+### **[Bob Ross Paintings](2023/0221)**
+![Screenshot](2023/0221/ross-paintings.png)
+
 ### **[Hollywood Age Gaps](2023/0214)**
 ![Screenshot](2023/0214/hollywood-age-gap.png)
 
