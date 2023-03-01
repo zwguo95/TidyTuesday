@@ -3,6 +3,9 @@ This repository is dedicated to my contributions to the TidyTuesday project. Eac
 
 ## Gallery of my works
 
+### **[African Language Sentiments](2023/0228)**
+![Screenshot](2023/0228/african-sentiments.png)
+
 ### **[Bob Ross Paintings](2023/0221)**
 ![Screenshot](2023/0221/ross-paintings.png)
 
