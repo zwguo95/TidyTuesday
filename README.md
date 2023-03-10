@@ -3,6 +3,9 @@ This repository is dedicated to my contributions to the TidyTuesday project. Eac
 
 ## Gallery of my works
 
+### **[Numbats in Australia](2023/0307)**
+![Screenshot](2023/0307/numbat.png)
+
 ### **[African Language Sentiments](2023/0228)**
 ![Screenshot](2023/0228/african-sentiments.png)
 
