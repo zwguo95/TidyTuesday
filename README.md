@@ -3,6 +3,9 @@ This repository is dedicated to my contributions to the TidyTuesday project. Eac
 
 ## Gallery of my works
 
+### **[European Drug Development](2023/0314)**
+![Screenshot](2023/0314/european-drugs.png)
+
 ### **[Numbats in Australia](2023/0307)**
 ![Screenshot](2023/0307/numbat.png)
 
