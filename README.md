@@ -3,6 +3,9 @@ This repository is dedicated to my contributions to the TidyTuesday project. Eac
 
 ## Gallery of my works
 
+### **[Time Zones](2023/0328)**
+![Screenshot](2023/0328/daylight.png)
+
 ### **[Programming Languages](2023/0321)**
 ![Screenshot](2023/0321/programming-languages.png)
 
